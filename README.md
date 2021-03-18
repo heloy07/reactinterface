@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# React Interface for managing meetings
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a Web User Interface for creating, editing, deleting meetings for companys, it's build using Create-React
 
 ## Available Scripts
 
