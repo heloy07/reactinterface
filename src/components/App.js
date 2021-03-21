@@ -14,6 +14,7 @@ class App extends Component {
       lastIndex: 0
     };
     this.deleteAppointment = this.deleteAppointment.bind(this);
+    this.toogleForm = this.toogleForm.bind(this);
   }
   deleteAppointment(apt){
     let tempApts = this.state.myAppointments;
@@ -22,6 +23,11 @@ class App extends Component {
       myAppointments:tempApts
     });
     
+  }
+  toogleForm(){
+    this.setState({
+      formDisplay: !this.state.formDisplay
+    });
   }
   componentDidMount() {
     fetch('./data.json')
@@ -47,7 +53,10 @@ class App extends Component {
             <div className="col-md-12 bg-white">
               <div className="container">
                 
-                <AddAppointments formDisplay={this.state.formDisplay}/>
+                <AddAppointments 
+                formDisplay={this.state.formDisplay}
+                toogleForm={this.toogleForm}
+                />
                 <SearchAppointments />
                 <ListAppointments appointments={this.state.myAppointments}
                   deleteAppointment={this.deleteAppointment} />
