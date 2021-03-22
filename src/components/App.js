@@ -1,4 +1,4 @@
-import { without } from 'lodash';
+import { without,findIndex } from 'lodash';
 import React, { Component } from 'react';
 import '../css/App.css';
 import AddAppointments from './AddAppointments';
@@ -20,6 +20,8 @@ class App extends Component {
     this.toogleForm = this.toogleForm.bind(this);
     this.addAppointment = this.addAppointment.bind(this);
     this.changeOrder = this.changeOrder.bind(this);
+    this.searchApts = this.searchApts.bind(this);
+    this.updateInfo = this.updateInfo.bind(this);
   }
   deleteAppointment(apt) {
     let tempApts = this.state.myAppointments;
@@ -29,10 +31,25 @@ class App extends Component {
     });
 
   }
-  changeOrder(order,dir){
+  changeOrder(order, dir) {
     this.setState({
-      orderBy:order,
+      orderBy: order,
       orderDir: dir
+    });
+  }
+  searchApts(query) {
+    this.setState({
+      queryText: query
+    });
+  }
+  updateInfo(name,value,id){
+    let tempApts = this.state.myAppointments;
+    let aptIndex = findIndex(this.state.myAppointments,{
+      aptId:id
+    });
+    tempApts[aptIndex][name] = value;
+    this.setState({
+      myAppointments: tempApts
     });
   }
   addAppointment(apt) {
@@ -77,18 +94,18 @@ class App extends Component {
       if (a[this.state.orderBy].toLowerCase() <
         b[this.state.orderBy].toLowerCase()) {
         return -1 * order;
-      }else{
-        return 1*order;
+      } else {
+        return 1 * order;
       }
 
-    }).filter(eachItem =>{
+    }).filter(eachItem => {
       return (
         eachItem['petName'].toLowerCase()
-        .includes(this.state.queryText.toLowerCase()) ||
+          .includes(this.state.queryText.toLowerCase()) ||
         eachItem['ownerName'].toLowerCase()
-        .includes(this.state.queryText.toLowerCase()) ||
+          .includes(this.state.queryText.toLowerCase()) ||
         eachItem['aptNotes'].toLowerCase()
-        .includes(this.state.queryText.toLowerCase())
+          .includes(this.state.queryText.toLowerCase())
 
       );
     });
@@ -105,13 +122,15 @@ class App extends Component {
                   addAppointment={this.addAppointment}
                 />
                 <SearchAppointments
-                  orderBy = {this.state.orderBy}
-                  orderDir = {this.state.orderDir}
-                  changeOrder = { this.changeOrder}
-                 />
-                <ListAppointments 
-                appointments={filterApts}
-                  deleteAppointment={this.deleteAppointment} />
+                  orderBy={this.state.orderBy}
+                  orderDir={this.state.orderDir}
+                  changeOrder={this.changeOrder}
+                  searchApts={this.searchApts}
+                />
+                <ListAppointments
+                  appointments={filterApts}
+                  deleteAppointment={this.deleteAppointment}
+                  updateInfo={this.updateInfo} />
               </div>
             </div>
           </div>
